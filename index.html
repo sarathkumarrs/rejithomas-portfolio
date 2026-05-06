@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Reji James</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{
+  --ink:#020202;
+  --ink2:#0a0908;
+  --ink3:#111009;
+  --gold:#B8762E;
+  --gold2:#D4A04A;
+  --cream:#EDE8DF;
+  --warm:#8C8680;
+  --dim:#3A3630;
+  --hairline:#1E1C18;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--cream);font-family:'DM Mono',monospace;font-weight:300;overflow-x:hidden;cursor:none}
+
+/* ── GRAIN ── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.032;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ── CURSOR ── */
+#cur{width:6px;height:6px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;z-index:9999;pointer-events:none;mix-blend-mode:difference}
+#cur-o{width:32px;height:32px;border:1px solid rgba(184,118,46,.5);border-radius:50%;position:fixed;top:0;left:0;z-index:9998;pointer-events:none;transition:width .3s,height .3s,border-color .3s}
+body:has(a:hover) #cur-o,body:has(button:hover) #cur-o{width:52px;height:52px;border-color:var(--gold)}
+
+/* ── PRELOADER ── */
+#preloader{position:fixed;inset:0;z-index:8000;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;transition:opacity .5s ease}
+.pre-top{position:absolute;top:0;left:0;right:0;height:50%;background:var(--ink);transition:transform 1.1s cubic-bezier(.77,0,.175,1);z-index:2}
+.pre-bot{position:absolute;bottom:0;left:0;right:0;height:50%;background:var(--ink);transition:transform 1.1s cubic-bezier(.77,0,.175,1);z-index:2}
+#preloader.open .pre-top{transform:translateY(-100%)}
+#preloader.open .pre-bot{transform:translateY(100%)}
+#preloader.fade{opacity:0}
+#preloader.done{display:none;pointer-events:none}
+.pre-count{font-family:'Bebas Neue',sans-serif;font-size:clamp(100px,18vw,240px);color:var(--cream);letter-spacing:-2px;line-height:1;position:relative;z-index:3;transition:opacity .4s}
+.pre-line{width:1px;height:0;background:var(--gold);position:absolute;left:50%;bottom:0;z-index:3;transition:height .8s ease}
+.pre-label{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);position:absolute;bottom:48px;z-index:3;opacity:0;transition:opacity .4s}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:700;padding:28px 60px;display:flex;align-items:center;justify-content:space-between;mix-blend-mode:difference}
+.n-logo{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;letter-spacing:3px;color:var(--cream);text-decoration:none;font-weight:300}
+.n-links{display:flex;gap:40px;list-style:none}
+.n-links a{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--warm);text-decoration:none;transition:color .3s}
+.n-links a:hover{color:var(--cream)}
+.n-cta{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(184,118,46,.3);padding:10px 22px;transition:background .3s,border-color .3s}
+.n-cta:hover{background:var(--gold);color:#000;border-color:var(--gold)}
+
+/* ── HERO ── */
+#hero{position:relative;height:100vh;overflow:hidden;display:flex;align-items:flex-end}
+#c3d{position:absolute;inset:0;width:100%;height:100%}
+.hero-grd{position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 60%,transparent 30%,rgba(2,2,2,.7) 70%,var(--ink) 100%);pointer-events:none;z-index:2}
+.hero-txt{position:relative;z-index:3;padding:0 60px 68px;width:100%}
+.hero-pre{font-size:9px;letter-spacing:7px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;overflow:hidden}
+.hero-pre span{display:inline-block;transform:translateY(120%);animation:slUp .7s .2s cubic-bezier(.16,1,.3,1) forwards}
+.hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(96px,14vw,196px);line-height:.87;color:var(--cream);letter-spacing:1px;overflow:hidden}
+.hero-h1 .l{display:block;transform:translateY(110%);animation:slUp .9s cubic-bezier(.16,1,.3,1) forwards}
+.hero-h1 .l:nth-child(1){animation-delay:.35s}
+.hero-h1 .l:nth-child(2){animation-delay:.5s;-webkit-text-stroke:1px rgba(237,232,223,.2);color:transparent}
+.hero-sub{position:absolute;right:60px;bottom:72px;z-index:3;text-align:right;max-width:320px}
+.hero-sub p{font-size:12px;line-height:1.9;color:var(--warm);margin-bottom:24px}
+.hero-sub a{display:inline-flex;align-items:center;gap:10px;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(184,118,46,.3);padding-bottom:6px;transition:gap .3s,border-color .3s}
+.hero-sub a:hover{gap:18px;border-color:var(--gold)}
+.hero-line{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--hairline),transparent)}
+@keyframes slUp{to{transform:translateY(0)}}
+
+/* ── TICKER ── */
+.ticker{height:44px;overflow:hidden;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);display:flex;align-items:center;background:var(--ink2)}
+.ticker-inner{display:flex;gap:0;white-space:nowrap;animation:tick 30s linear infinite}
+.ticker-inner span{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--dim);padding:0 44px}
+.ticker-inner span.accent{color:var(--gold)}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── SECTIONS BASE ── */
+section{position:relative}
+.s-label{font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:12px}
+.s-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7.5vw,108px);color:var(--cream);letter-spacing:1px;line-height:.9}
+.s-serif{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(28px,3.5vw,44px);color:var(--cream);line-height:1.2}
+
+/* ── ABOUT ── */
+#about{background:var(--ink2);padding:120px 60px}
+.about-grid{display:grid;grid-template-columns:420px 1fr;gap:80px;margin-top:64px;align-items:start}
+
+/* PHOTO SLOT */
+.photo-col{position:relative}
+.photo-frame{
+  position:relative;width:100%;aspect-ratio:2/3;overflow:hidden;
+  background:#0c0b09;
+}
+.photo-frame img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+/* ┌──────────────────────────────────────────┐
+   │  📸 REJI'S PHOTO — HOW TO ADD           │
+   │  1. Save photo → reji.jpg (same folder) │
+   │  2. Change img src="" → src="reji.jpg"  │
+   │  3. Set img style="display:block"       │
+   │  4. Delete .ph-block div below          │
+   └──────────────────────────────────────────┘ */
+.photo-frame img{display:none} /* ← remove this line when photo is added */
+.ph-block{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border:1px dashed rgba(184,118,46,.2)}
+.ph-block svg{width:36px;height:36px;opacity:.2;color:var(--gold)}
+.ph-block p{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);text-align:center;line-height:2}
+.ph-block strong{color:rgba(184,118,46,.5)}
+.photo-tag{position:absolute;bottom:0;left:0;right:0;padding:22px;background:linear-gradient(to top,rgba(2,2,2,.95),transparent)}
+.photo-tag .pt-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--cream)}
+.photo-tag .pt-title{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-top:4px}
+.photo-corner{position:absolute;width:24px;height:24px;border-color:var(--gold);border-style:solid;border-width:0;opacity:.6}
+.photo-corner.tl{top:12px;left:12px;border-top-width:1px;border-left-width:1px}
+.photo-corner.tr{top:12px;right:12px;border-top-width:1px;border-right-width:1px}
+.photo-corner.bl{bottom:12px;left:12px;border-bottom-width:1px;border-left-width:1px}
+.photo-corner.br{bottom:12px;right:12px;border-bottom-width:1px;border-right-width:1px}
+
+.about-right{}
+.about-pull{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(22px,2.5vw,32px);line-height:1.5;color:var(--cream);border-left:1px solid var(--gold);padding-left:28px;margin-bottom:48px}
+.about-body p{font-size:12px;line-height:2;color:var(--warm);margin-bottom:18px}
+.about-body p strong{color:var(--cream);font-weight:400}
+.about-brands{display:flex;flex-wrap:wrap;gap:8px;margin-top:36px}
+.ab{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);border:1px solid var(--hairline);padding:8px 14px;transition:color .3s,border-color .3s}
+.ab:hover{color:var(--gold);border-color:rgba(184,118,46,.4)}
+.tl-wrap{margin-top:52px;display:flex;flex-direction:column;gap:0}
+.tl-row{display:grid;grid-template-columns:90px 1fr;gap:24px;padding:22px 0;border-bottom:1px solid var(--hairline);position:relative}
+.tl-row:first-child{border-top:1px solid var(--hairline)}
+.tl-yr{font-size:9px;letter-spacing:2px;color:var(--gold);padding-top:3px}
+.tl-info-role{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--cream);letter-spacing:1px;line-height:1}
+.tl-info-co{font-size:10px;letter-spacing:2px;color:var(--warm);margin-top:4px}
+
+/* ── NUMBERS ── */
+#numbers{background:var(--ink);padding:0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.numbers-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.num-cell{padding:80px 52px;border-right:1px solid var(--hairline);position:relative;overflow:hidden}
+.num-cell:last-child{border-right:none}
+.num-cell::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 100%,rgba(184,118,46,.04),transparent);opacity:0;transition:opacity .5s}
+.num-cell:hover::before{opacity:1}
+.n-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(64px,7vw,96px);color:var(--cream);letter-spacing:1px;line-height:1;display:flex;align-items:flex-start;gap:4px}
+.n-big sup{font-size:.35em;color:var(--gold);margin-top:12px}
+.n-desc{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--warm);margin-top:10px}
+
+/* ── SERVICES ── */
+#services{background:var(--ink2);padding:120px 60px}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hairline);margin-top:64px;border:1px solid var(--hairline)}
+.svc{background:var(--ink2);padding:52px 40px;position:relative;overflow:hidden;cursor:default;transition:background .4s}
+.svc::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.svc:hover{background:#0f0e0b}
+.svc:hover::after{transform:scaleY(1)}
+.svc-n{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:72px;color:rgba(184,118,46,.07);position:absolute;top:18px;right:28px;line-height:1;font-weight:300}
+.svc-ico{width:32px;height:32px;color:var(--gold);margin-bottom:28px}
+.svc-title{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--cream);letter-spacing:1px;margin-bottom:14px}
+.svc-body{font-size:11px;line-height:1.9;color:var(--warm)}
+
+/* ── GALLERY ── */
+#gallery{background:var(--ink);padding:120px 60px}
+.gallery-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:52px}
+.gallery-note{font-size:11px;line-height:1.8;color:var(--warm);max-width:280px;text-align:right}
+/* ── GALLERY GRID ──
+   📸 HOW TO ADD PHOTOS:
+   1. Get photos from carsbuddy.in/gallery or @carsbuddydetailingstudio
+   2. Save as car1.jpg … car5.jpg in same folder
+   3. Find each .gi item, set its style background-image
+      → style="background-image:url('car1.jpg')"
+   4. Delete the .gi-ph div inside that item
+*/
+.gallery-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:280px 280px;gap:3px}
+.gi{background:var(--ink3);position:relative;overflow:hidden}
+.gi:nth-child(1){grid-column:span 5;grid-row:span 2}
+.gi:nth-child(2){grid-column:span 4}
+.gi:nth-child(3){grid-column:span 3}
+.gi:nth-child(4){grid-column:span 3}
+.gi:nth-child(5){grid-column:span 4}
+.gi-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.gi:hover .gi-bg{transform:scale(1.06)}
+.gi-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(2,2,2,.8) 0%,transparent 50%);opacity:0;transition:opacity .4s}
+.gi:hover .gi-ov{opacity:1}
+.gi-cap{position:absolute;bottom:18px;left:20px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);transform:translateY(8px);opacity:0;transition:all .4s}
+.gi:hover .gi-cap{transform:none;opacity:1}
+.gi-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:1px dashed rgba(184,118,46,.15)}
+.gi-ph svg{width:28px;height:28px;opacity:.18;color:var(--gold)}
+.gi-ph span{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--dim)}
+.gi-ph code{font-size:8px;color:rgba(184,118,46,.35)}
+
+/* ── AWARDS ── */
+#awards{background:var(--ink2);padding:120px 60px}
+.awards-inner{margin-top:64px}
+.aw-row{display:grid;grid-template-columns:160px 1fr auto;align-items:center;gap:48px;padding:40px 0;border-bottom:1px solid var(--hairline);position:relative;overflow:hidden}
+.aw-row:first-child{border-top:1px solid var(--hairline)}
+.aw-row::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 200% at 0% 50%,rgba(184,118,46,.05),transparent);opacity:0;transition:opacity .4s}
+.aw-row:hover::after{opacity:1}
+.aw-yr{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:48px;color:var(--hairline);font-weight:300}
+.aw-yr.active{color:var(--gold);opacity:.35}
+.aw-info-title{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--cream);letter-spacing:1px;line-height:1;margin-bottom:6px}
+.aw-info-org{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--warm)}
+.aw-badge{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(184,118,46,.3);padding:9px 18px;white-space:nowrap}
+
+/* ── LOCATIONS ── */
+#locations{background:var(--ink);padding:120px 60px}
+.loc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--hairline);margin-top:64px;border:1px solid var(--hairline)}
+.loc{background:var(--ink);padding:48px 28px;text-align:center;position:relative;overflow:hidden;transition:background .4s}
+.loc::before{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:0;height:1px;background:var(--gold);transition:width .5s cubic-bezier(.16,1,.3,1)}
+.loc:hover{background:var(--ink2)}
+.loc:hover::before{width:100%}
+.loc-num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--gold);margin-bottom:20px;display:block;opacity:.6}
+.loc-city{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--cream);letter-spacing:3px;margin-bottom:6px}
+.loc-state{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--warm)}
+
+/* ── CONTACT ── */
+#contact{background:var(--ink2);padding:160px 60px}
+.contact-split{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:72px}
+.ct-big{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(32px,4vw,52px);line-height:1.3;color:var(--cream);margin-bottom:52px}
+.ct-big em{color:var(--gold);font-style:italic}
+.ct-items{display:flex;flex-direction:column;gap:0}
+.ct-row{display:flex;align-items:flex-start;gap:20px;padding:24px 0;border-bottom:1px solid var(--hairline)}
+.ct-row:first-child{border-top:1px solid var(--hairline)}
+.ct-ico{width:14px;height:14px;color:var(--gold);flex-shrink:0;margin-top:3px}
+.ct-lbl{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.ct-val{font-size:13px;color:var(--cream)}
+.ct-val a{color:var(--cream);text-decoration:none;transition:color .3s}
+.ct-val a:hover{color:var(--gold)}
+.soc-hd{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--warm);margin-bottom:28px}
+.soc-list{display:flex;flex-direction:column;gap:3px}
+.soc-a{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border:1px solid var(--hairline);color:var(--warm);text-decoration:none;font-size:9px;letter-spacing:3px;text-transform:uppercase;transition:border-color .3s,color .3s,background .3s;position:relative;overflow:hidden}
+.soc-a::before{content:'';position:absolute;inset:0;background:var(--gold);transform:translateX(-100%);transition:transform .4s cubic-bezier(.16,1,.3,1);z-index:0}
+.soc-a:hover{color:#000;border-color:var(--gold)}
+.soc-a:hover::before{transform:translateX(0)}
+.soc-a span,.soc-a svg{position:relative;z-index:1}
+.soc-a svg{width:13px;height:13px}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);border-top:1px solid var(--hairline);padding:44px 60px;display:flex;justify-content:space-between;align-items:center}
+.f-l{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:2px;color:var(--warm)}
+.f-c{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--dim)}
+.f-r{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--dim)}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(32px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.rv.on{opacity:1;transform:none}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}.rv.d4{transition-delay:.4s}
+.rv-left{opacity:0;transform:translateX(-32px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.rv-left.on{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  nav{padding:20px 28px}.n-links{display:none}
+  section{padding:80px 28px!important}
+  #hero .hero-txt,.hero-sub{padding-left:28px!important;padding-right:28px!important}
+  .about-grid,.contact-split{grid-template-columns:1fr}
+  .numbers-grid,.svc-grid{grid-template-columns:1fr 1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gi{grid-column:span 1!important;grid-row:span 1!important}
+  .loc-grid{grid-template-columns:1fr 1fr}
+  .aw-row{grid-template-columns:80px 1fr}
+  .aw-badge{display:none}
+  footer{flex-direction:column;gap:14px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-o"></div>
+
+<!-- ════════════════════════════════════════
+     PRELOADER
+════════════════════════════════════════ -->
+<div id="preloader">
+  <div class="pre-top"></div>
+  <div class="pre-bot"></div>
+  <div class="pre-count" id="preCount">00</div>
+  <div class="pre-line" id="preLine"></div>
+  <div class="pre-label" id="preLabel">Reji James · Portfolio</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav>
+  <a href="#" class="n-logo">Reji James</a>
+  <ul class="n-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="n-cta">Get in Touch</a>
+</nav>
+
+<!-- ════════════════════════════════════════
+     HERO — Three.js 3D Car
+════════════════════════════════════════ -->
+<section id="hero">
+  <canvas id="c3d"></canvas>
+  <div class="hero-grd"></div>
+  <div class="hero-txt">
+    <div class="hero-pre"><span>Founder · Carsbuddy &nbsp;·&nbsp; Bengaluru, India</span></div>
+    <h1 class="hero-h1">
+      <span class="l">REJI</span>
+      <span class="l">JAMES</span>
+    </h1>
+  </div>
+  <div class="hero-sub">
+    <p>South India's most trusted automotive detailing & paint protection studio — spanning 5 cities, 3 awards, and thousands of cars.</p>
+    <a href="#about">Discover the story <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M0 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg></a>
+  </div>
+  <div class="hero-line"></div>
+</section>
+
+<!-- ════════════════════════════════════════
+     TICKER
+════════════════════════════════════════ -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>Carsbuddy Pvt Ltd</span><span class="accent">·</span>
+    <span>XPEL Authorized Installer</span><span class="accent">·</span>
+    <span>Modesta Ceramic</span><span class="accent">·</span>
+    <span class="accent">Revenue Maestro 2025</span><span class="accent">·</span>
+    <span>River Mobility</span><span class="accent">·</span>
+    <span>Volvo Cars</span><span class="accent">·</span>
+    <span>VST Maserati</span><span class="accent">·</span>
+    <span>Bengaluru · Kochi · Coimbatore · Shivamogga · Mysore</span><span class="accent">·</span>
+    <span>Carsbuddy Pvt Ltd</span><span class="accent">·</span>
+    <span>XPEL Authorized Installer</span><span class="accent">·</span>
+    <span>Modesta Ceramic</span><span class="accent">·</span>
+    <span class="accent">Revenue Maestro 2025</span><span class="accent">·</span>
+    <span>River Mobility</span><span class="accent">·</span>
+    <span>Volvo Cars</span><span class="accent">·</span>
+    <span>VST Maserati</span><span class="accent">·</span>
+    <span>Bengaluru · Kochi · Coimbatore · Shivamogga · Mysore</span><span class="accent">·</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════ -->
+<section id="about">
+  <div style="padding:120px 60px">
+    <span class="s-label rv">The Man Behind the Brand</span>
+    <h2 class="s-h rv d1">DRIVEN BY<br>PASSION</h2>
+
+    <div class="about-grid">
+
+      <!-- ╔═══════════════════════════════════════╗
+           ║  📸 REJI'S PHOTO — IMAGE SLOT         ║
+           ║  Step 1: Save photo as  reji.jpg      ║
+           ║  Step 2: Set img src="reji.jpg"       ║
+           ║  Step 3: Remove  display:none  line   ║
+           ║  Step 4: Delete the .ph-block div     ║
+           ╚═══════════════════════════════════════╝ -->
+      <div class="photo-col rv-left">
+        <div class="photo-frame">
+          <img src="" alt="Reji James" style="display:none"/>
+          <div class="ph-block">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <p><strong>REJI'S PHOTO HERE</strong><br>Save as reji.jpg<br>Set img src="reji.jpg"<br>Delete this box</p>
+          </div>
+          <div class="photo-tag">
+            <div class="pt-name">Reji James</div>
+            <div class="pt-title">Founder & Director · Carsbuddy</div>
+          </div>
+          <div class="photo-corner tl"></div>
+          <div class="photo-corner tr"></div>
+          <div class="photo-corner bl"></div>
+          <div class="photo-corner br"></div>
+        </div>
+      </div>
+
+      <div class="about-right">
+        <div class="about-pull rv d1">"I didn't build a detailing studio. I built a standard — and then took it to five cities."</div>
+        <div class="about-body rv d2">
+          <p>Reji James is a <strong>serial automotive entrepreneur</strong> based in Bengaluru, Karnataka. His career spans two decades across luxury car sales, electric mobility, and premium automotive care.</p>
+          <p>As <strong>Founder & Director of Carsbuddy Pvt Ltd</strong> (est. 2020), he built South India's most trusted car detailing and paint protection brand from the ground up — expanding to five cities and partnering with global names like <strong>XPEL</strong> and <strong>Modesta Ceramic</strong>.</p>
+          <p>Prior to Carsbuddy, Reji led high-value sales operations at <strong>Tafe Access</strong> and established an authorized dealership for <strong>River Mobility</strong> electric vehicles in Mysore — consistently proving his ability to spot, enter, and scale in high-growth automotive segments.</p>
+          <div class="about-brands">
+            <span class="ab">XPEL PPF</span><span class="ab">Modesta Ceramic</span>
+            <span class="ab">River Mobility</span><span class="ab">Volvo Cars</span>
+            <span class="ab">VST Maserati</span><span class="ab">Royal Enfield</span>
+            <span class="ab">Tafe Access</span><span class="ab">Jubilant MotorWorks</span>
+          </div>
+        </div>
+        <div class="tl-wrap rv d3">
+          <div class="tl-row"><div class="tl-yr">2020 —<br>Present</div><div><div class="tl-info-role">Founder & Director</div><div class="tl-info-co">Carsbuddy Pvt Ltd · Bengaluru</div></div></div>
+          <div class="tl-row"><div class="tl-yr">2022 —<br>2024</div><div><div class="tl-info-role">Executive Director</div><div class="tl-info-co">River Mobility Authorized Dealer · Mysore</div></div></div>
+          <div class="tl-row"><div class="tl-yr">Pre<br>2020</div><div><div class="tl-info-role">Senior Sales Manager</div><div class="tl-info-co">Tafe Access · Bengaluru</div></div></div>
+          <div class="tl-row"><div class="tl-yr">Ongoing</div><div><div class="tl-info-role">Brand Partner</div><div class="tl-info-co">Volvo · Maserati · Jubilant MotorWorks</div></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     NUMBERS
+════════════════════════════════════════ -->
+<section id="numbers">
+  <div class="numbers-grid">
+    <div class="num-cell rv"><div class="n-big" data-target="5"><span class="cnt">0</span><sup>+</sup></div><div class="n-desc">Cities Across South India</div></div>
+    <div class="num-cell rv d1"><div class="n-big" data-target="20"><span class="cnt">0</span><sup>+</sup></div><div class="n-desc">Years of Automotive Experience</div></div>
+    <div class="num-cell rv d2"><div class="n-big" data-target="3000"><span class="cnt">0</span><sup>+</sup></div><div class="n-desc">Cars Detailed & Protected</div></div>
+    <div class="num-cell rv d3"><div class="n-big" data-target="3"><span class="cnt">0</span></div><div class="n-desc">National Awards Won</div></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     GALLERY
+     📸 HOW TO ADD PHOTOS:
+     - Download from carsbuddy.in/gallery or
+       Instagram @carsbuddydetailingstudio
+     - Name them: car1.jpg … car5.jpg
+     - Add  style="background-image:url('car1.jpg')"
+       to each .gi-bg div
+     - Delete the .gi-ph div in that item
+════════════════════════════════════════ -->
+<section id="gallery" style="padding:120px 60px">
+  <div class="gallery-hdr">
+    <div>
+      <span class="s-label rv">Work Portfolio</span>
+      <h2 class="s-h rv d1">OUR FINEST<br>WORK</h2>
+    </div>
+    <p class="gallery-note rv d2">Every car that leaves our studio is a testament to obsessive craftsmanship — from flagship XPEL installs to full Modesta treatments on luxury automobiles.</p>
+  </div>
+  <div class="gallery-grid">
+    <!-- SLOT 1 → car1.jpg — Best shot, tall hero -->
+    <div class="gi rv">
+      <div class="gi-bg" style="background-image:url('')"></div>
+      <div class="gi-ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Photo Slot 1</span><code>car1.jpg</code>
+      </div>
+      <div class="gi-ov"></div>
+      <div class="gi-cap">XPEL Ultimate Plus · PPF</div>
+    </div>
+    <!-- SLOT 2 → car2.jpg -->
+    <div class="gi rv d1">
+      <div class="gi-bg" style="background-image:url('')"></div>
+      <div class="gi-ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Photo Slot 2</span><code>car2.jpg</code>
+      </div>
+      <div class="gi-ov"></div>
+      <div class="gi-cap">Modesta Ceramic Coating</div>
+    </div>
+    <!-- SLOT 3 → car3.jpg -->
+    <div class="gi rv d2">
+      <div class="gi-bg" style="background-image:url('')"></div>
+      <div class="gi-ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Photo Slot 3</span><code>car3.jpg</code>
+      </div>
+      <div class="gi-ov"></div>
+      <div class="gi-cap">Graphene · Luxury Detail</div>
+    </div>
+    <!-- SLOT 4 → car4.jpg -->
+    <div class="gi rv d2">
+      <div class="gi-bg" style="background-image:url('')"></div>
+      <div class="gi-ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Photo Slot 4</span><code>car4.jpg</code>
+      </div>
+      <div class="gi-ov"></div>
+      <div class="gi-cap">Vinyl Wrap · Transformation</div>
+    </div>
+    <!-- SLOT 5 → car5.jpg -->
+    <div class="gi rv d3">
+      <div class="gi-bg" style="background-image:url('')"></div>
+      <div class="gi-ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Photo Slot 5</span><code>car5.jpg</code>
+      </div>
+      <div class="gi-ov"></div>
+      <div class="gi-cap">Sun Control · Tinting</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SERVICES
+════════════════════════════════════════ -->
+<section id="services">
+  <div style="padding:120px 60px">
+    <span class="s-label rv">What We Deliver</span>
+    <h2 class="s-h rv d1">CARSBUDDY<br>SERVICES</h2>
+    <div class="svc-grid">
+      <div class="svc rv"><div class="svc-n">01</div><svg class="svc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div class="svc-title">Ceramic Coating</div><div class="svc-body">Nano-ceramic protection bonded to your car's paint — a hydrophobic, high-gloss shield against UV, dirt and micro-scratches.</div></div>
+      <div class="svc rv d1"><div class="svc-n">02</div><svg class="svc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="1.5"/><path d="M3 9h18M9 21V9"/></svg><div class="svc-title">Paint Protection Film</div><div class="svc-body">XPEL Ultimate Plus PPF — self-healing, optically clear film that guards every inch against stone chips, swirls and road debris.</div></div>
+      <div class="svc rv d2"><div class="svc-n">03</div><svg class="svc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg><div class="svc-title">Graphene Coating</div><div class="svc-body">Next-generation graphene-infused coating with superior heat dispersion, anti-static properties and a mirror-slick finish.</div></div>
+      <div class="svc rv"><div class="svc-n">04</div><svg class="svc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><div class="svc-title">Vinyl Wrap</div><div class="svc-body">Full and partial wraps in any finish — matte, satin, gloss, chrome. Transform your vehicle's identity without permanent change.</div></div>
+      <div class="svc rv d1"><div class="svc-n">05</div><svg class="svc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><div class="svc-title">Sun Control Film</div><div class="svc-body">Premium window tinting blocking UV rays, reducing cabin heat and providing privacy without compromising outward clarity.</div></div>
+      <div class="svc rv d2"><div class="svc-n">06</div><svg class="svc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg><div class="svc-title">Premium Detailing</div><div class="svc-body">Interior & exterior detailing, paint correction, headlight restoration and moto detailing for motorcycles and superbikes.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     AWARDS
+════════════════════════════════════════ -->
+<section id="awards">
+  <div style="padding:120px 60px">
+    <span class="s-label rv">Recognition</span>
+    <h2 class="s-h rv d1">AWARDS &<br>MILESTONES</h2>
+    <div class="awards-inner">
+      <div class="aw-row rv">
+        <div class="aw-yr active">2025</div>
+        <div><div class="aw-info-title">Revenue Maestro Award</div><div class="aw-info-org">RAC GOA 2025 · Exceptional Revenue Performance & Business Leadership</div></div>
+        <div class="aw-badge">RAC GOA 2025</div>
+      </div>
+      <div class="aw-row rv d1">
+        <div class="aw-yr active">2025</div>
+        <div><div class="aw-info-title">Certificate of Achievement</div><div class="aw-info-org">RAC GOA 2025 · Exceptional Contribution Among Top Automotive Leaders</div></div>
+        <div class="aw-badge">Achievement</div>
+      </div>
+      <div class="aw-row rv d2">
+        <div class="aw-yr">——</div>
+        <div><div class="aw-info-title">Full Circle Honour</div><div class="aw-info-org">Jubilant MotorWorks Pvt. Ltd · Outstanding Partnership & Brand Delivery</div></div>
+        <div class="aw-badge">Jubilant</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     LOCATIONS
+════════════════════════════════════════ -->
+<section id="locations">
+  <div style="padding:120px 60px">
+    <span class="s-label rv">Presence</span>
+    <h2 class="s-h rv d1">5 CITIES.<br>ONE STANDARD.</h2>
+    <div class="loc-grid" style="margin-top:64px">
+      <div class="loc rv"><span class="loc-num">01</span><div class="loc-city">BANGALORE</div><div class="loc-state">Karnataka</div></div>
+      <div class="loc rv d1"><span class="loc-num">02</span><div class="loc-city">SHIVAMOGGA</div><div class="loc-state">Karnataka</div></div>
+      <div class="loc rv d2"><span class="loc-num">03</span><div class="loc-city">KOCHI</div><div class="loc-state">Kerala</div></div>
+      <div class="loc rv d3"><span class="loc-num">04</span><div class="loc-city">COIMBATORE</div><div class="loc-state">Tamil Nadu</div></div>
+      <div class="loc rv d4"><span class="loc-num">05</span><div class="loc-city">MYSORE</div><div class="loc-state">Karnataka</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     CONTACT
+════════════════════════════════════════ -->
+<section id="contact">
+  <div style="padding:160px 60px">
+    <span class="s-label rv">Reach Out</span>
+    <div class="contact-split">
+      <div>
+        <div class="ct-big rv d1">"Let's talk about your car — or your <em>next big move.</em>"</div>
+        <div class="ct-items">
+          <div class="ct-row rv d1"><svg class="ct-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.5 1.18 2 2 0 012.49 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg><div><div class="ct-lbl">Phone</div><div class="ct-val"><a href="tel:+917899747777">+91 78997 47777</a></div></div></div>
+          <div class="ct-row rv d2"><svg class="ct-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><div><div class="ct-lbl">Email</div><div class="ct-val"><a href="mailto:carsbuddy.in@gmail.com">carsbuddy.in@gmail.com</a></div></div></div>
+          <div class="ct-row rv d3"><svg class="ct-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20"/></svg><div><div class="ct-lbl">Website</div><div class="ct-val"><a href="https://carsbuddy.in" target="_blank">carsbuddy.in</a></div></div></div>
+          <div class="ct-row rv d4"><svg class="ct-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><div><div class="ct-lbl">Address</div><div class="ct-val">38/3, Agara, Koramangala 1st Block,<br>Sarjapur Road, Bengaluru 560034</div></div></div>
+        </div>
+      </div>
+      <div class="rv d2">
+        <div class="soc-hd">Connect on Social</div>
+        <div class="soc-list">
+          <a href="https://www.linkedin.com/in/reji-james-892b4647/" target="_blank" class="soc-a"><span>LinkedIn — Reji James</span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="https://www.instagram.com/carsbuddydetailingstudio/" target="_blank" class="soc-a"><span>@carsbuddydetailingstudio</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/></svg></a>
+          <a href="https://www.facebook.com/carsbuddyblr" target="_blank" class="soc-a"><span>facebook.com/carsbuddyblr</span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+          <a href="https://www.youtube.com/channel/UCfRCnIsU-8LYV6AuPBSGG0Q" target="_blank" class="soc-a"><span>YouTube Channel</span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#020202" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="f-l">Reji James</div>
+  <div class="f-c">© 2025 Carsbuddy Pvt Ltd · All Rights Reserved</div>
+  <div class="f-r">Est. Bengaluru · 2020</div>
+</footer>
+
+<script>
+/* ──────────────────────────────────────
+   CURSOR
+────────────────────────────────────── */
+const cur=document.getElementById('cur'),curO=document.getElementById('cur-o');
+let mx=0,my=0,ox=0,oy=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.transform=`translate(${mx-3}px,${my-3}px)`;
+});
+(function animCur(){
+  ox+=(mx-ox)*.1;oy+=(my-oy)*.1;
+  curO.style.transform=`translate(${ox-16}px,${oy-16}px)`;
+  requestAnimationFrame(animCur);
+})();
+
+/* ──────────────────────────────────────
+   PRELOADER
+────────────────────────────────────── */
+const preCount=document.getElementById('preCount');
+const preLine=document.getElementById('preLine');
+const preLabel=document.getElementById('preLabel');
+const preloader=document.getElementById('preloader');
+let count=0;
+setTimeout(()=>{ preLine.style.height='80px'; preLabel.style.opacity='1'; },200);
+const inc=setInterval(()=>{
+  count+=Math.floor(Math.random()*7)+3;
+  if(count>=100){count=100;clearInterval(inc);}
+  preCount.textContent=String(count).padStart(2,'0');
+  if(count===100){
+    setTimeout(()=>{
+      preCount.style.opacity='0';
+      preLine.style.opacity='0';
+      preLabel.style.opacity='0';
+      setTimeout(()=>{
+        preloader.classList.add('open');
+        setTimeout(()=>{
+          preloader.classList.add('fade');
+          setTimeout(()=>preloader.classList.add('done'),600);
+        },1200);
+      },350);
+    },400);
+  }
+},60);
+
+/* ──────────────────────────────────────
+   SCROLL REVEAL
+────────────────────────────────────── */
+const rvObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
+},{threshold:.12});
+document.querySelectorAll('.rv,.rv-left').forEach(el=>rvObs.observe(el));
+
+/* ──────────────────────────────────────
+   COUNTER ANIMATION
+────────────────────────────────────── */
+function animateCount(el,target,duration){
+  const start=performance.now();
+  const update=now=>{
+    const p=Math.min((now-start)/duration,1);
+    const ease=1-Math.pow(1-p,4);
+    el.textContent=target>=1000?Math.floor(ease*target).toLocaleString():Math.floor(ease*target);
+    if(p<1)requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+const numObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting&&!e.target.dataset.counted){
+      e.target.dataset.counted='1';
+      const t=parseInt(e.target.dataset.target);
+      animateCount(e.target.querySelector('.cnt'),t,1800);
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll('.num-cell').forEach(el=>numObs.observe(el));
+
+/* ──────────────────────────────────────
+   THREE.JS — PREMIUM 3D CAR
+   Cinematic orbiting camera, PBR materials,
+   golden rim accents, environment lighting
+────────────────────────────────────── */
+(function(){
+  const canvas=document.getElementById('c3d');
+  const W=window.innerWidth,H=window.innerHeight;
+  canvas.width=W;canvas.height=H;
+  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(W,H);
+  renderer.shadowMap.enabled=true;
+  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.1;
+
+  const scene=new THREE.Scene();
+  scene.fog=new THREE.Fog(0x020202,14,28);
+
+  const camera=new THREE.PerspectiveCamera(38,W/H,.1,100);
+  camera.position.set(7,3,7);
+  camera.lookAt(0,.5,0);
+
+  /* Lighting */
+  scene.add(new THREE.AmbientLight(0xfff8f0,.18));
+  const key=new THREE.DirectionalLight(0xfff5e0,2.2);
+  key.position.set(10,14,8);key.castShadow=true;
+  key.shadow.mapSize.set(2048,2048);scene.add(key);
+  const rim=new THREE.DirectionalLight(0xB8762E,.9);
+  rim.position.set(-10,3,-6);scene.add(rim);
+  const fill=new THREE.DirectionalLight(0x1a2a3a,.4);
+  fill.position.set(0,8,-10);scene.add(fill);
+  const under=new THREE.PointLight(0xB8762E,.3,12);
+  under.position.set(0,-1,0);scene.add(under);
+
+  /* Ground */
+  const gnd=new THREE.Mesh(
+    new THREE.PlaneGeometry(30,30),
+    new THREE.MeshStandardMaterial({color:0x060504,metalness:.98,roughness:.05,opacity:.85,transparent:true})
+  );
+  gnd.rotation.x=-Math.PI/2;gnd.position.y=-.78;gnd.receiveShadow=true;scene.add(gnd);
+
+  /* Grid */
+  const grid=new THREE.GridHelper(24,28,0x150e00,0x0d0900);
+  grid.position.y=-.775;scene.add(grid);
+
+  /* Materials */
+  const bodyM=new THREE.MeshStandardMaterial({color:0x0a0906,metalness:.97,roughness:.12});
+  const glassM=new THREE.MeshStandardMaterial({color:0x060d14,metalness:.1,roughness:.02,opacity:.75,transparent:true});
+  const rimM=new THREE.MeshStandardMaterial({color:0xB8762E,metalness:1,roughness:.04});
+  const tireM=new THREE.MeshStandardMaterial({color:0x0e0c0a,metalness:.1,roughness:.85});
+  const lightM=new THREE.MeshStandardMaterial({color:0xffe8aa,emissive:0xffe8aa,emissiveIntensity:.9});
+  const tailM=new THREE.MeshStandardMaterial({color:0xff2200,emissive:0xff2200,emissiveIntensity:.7});
+  const edgeM=new THREE.LineBasicMaterial({color:0xB8762E,opacity:.7,transparent:true});
+  const dimEdge=new THREE.LineBasicMaterial({color:0x2a1e0a,opacity:.3,transparent:true});
+
+  const G=new THREE.Group();
+
+  function mesh(geo,mat,x,y,z,rx,ry,rz){
+    const m=new THREE.Mesh(geo,mat);
+    m.position.set(x||0,y||0,z||0);
+    if(rx)m.rotation.x=rx;if(ry)m.rotation.y=ry;if(rz)m.rotation.z=rz;
+    m.castShadow=true;G.add(m);return m;
+  }
+  function edges(m,mat){
+    const e=new THREE.EdgesGeometry(m.geometry);
+    const l=new THREE.LineSegments(e,mat||edgeM);
+    l.position.copy(m.position);l.rotation.copy(m.rotation);G.add(l);
+  }
+
+  // ─ Lower body
+  const body=mesh(new THREE.BoxGeometry(4.6,.52,2.0),bodyM,0,0,0);edges(body,dimEdge);
+  // ─ Sill
+  mesh(new THREE.BoxGeometry(4.2,.16,2.12),bodyM,0,-.2,0);
+  // ─ Cabin
+  const cab=mesh(new THREE.BoxGeometry(2.4,.6,1.76),bodyM,-.3,.55,0);edges(cab,edgeM);
+  // ─ Roof
+  const roof=mesh(new THREE.BoxGeometry(1.9,.07,1.62),bodyM,-.35,.87,0);edges(roof,edgeM);
+  // ─ Hood slope
+  const hoodA=mesh(new THREE.BoxGeometry(1.5,.12,1.96),bodyM,1.45,.28,0);edges(hoodA,edgeM);
+  const hoodB=mesh(new THREE.BoxGeometry(.6,.08,1.96),bodyM,2.0,.16,0);
+  // ─ Trunk
+  const trunk=mesh(new THREE.BoxGeometry(.8,.1,1.96),bodyM,-1.75,.28,0);edges(trunk,edgeM);
+  // ─ Windshield
+  const ws=mesh(new THREE.BoxGeometry(.07,.54,1.66),glassM,.9,.57,0);ws.rotation.z=-.26;
+  // ─ Rear window
+  const rw=mesh(new THREE.BoxGeometry(.07,.5,1.66),glassM,-1.37,.57,0);rw.rotation.z=.28;
+  // ─ Side glass L
+  mesh(new THREE.BoxGeometry(1.9,.38,.05),glassM,-.22,.62,.92);
+  // ─ Side glass R
+  mesh(new THREE.BoxGeometry(1.9,.38,.05),glassM,-.22,.62,-.92);
+  // ─ A-pillar L
+  mesh(new THREE.BoxGeometry(.07,.5,.07),bodyM,.72,.62,.86);
+  mesh(new THREE.BoxGeometry(.07,.5,.07),bodyM,.72,.62,-.86);
+  // ─ Headlights
+  [.72,-.72].forEach(z=>{
+    const hl=mesh(new THREE.BoxGeometry(.07,.16,.52),lightM,2.25,.13,z);
+    const pt=new THREE.PointLight(0xffe8aa,.8,5);pt.position.set(2.5,.2,z);scene.add(pt);
+  });
+  // ─ DRL strip
+  [.55,-.55].forEach(z=>{
+    mesh(new THREE.BoxGeometry(.04,.04,.9),lightM,2.27,.24,z);
+  });
+  // ─ Tail lights
+  [.72,-.72].forEach(z=>{ mesh(new THREE.BoxGeometry(.07,.14,.5),tailM,-2.25,.13,z); });
+  // ─ Tail strip
+  mesh(new THREE.BoxGeometry(.05,.04,1.5),tailM,-2.27,.22,0);
+  // ─ Grille
+  const gr=mesh(new THREE.BoxGeometry(.06,.22,1.3),new THREE.MeshStandardMaterial({color:0x120e00,metalness:.8,roughness:.3}),2.28,0,0);edges(gr,edgeM);
+  // ─ Front bumper
+  mesh(new THREE.BoxGeometry(.2,.3,1.96),new THREE.MeshStandardMaterial({color:0x0c0a07,metalness:.6,roughness:.4}),2.31,-.15,0);
+  // ─ Rear bumper + diffuser
+  mesh(new THREE.BoxGeometry(.2,.28,1.96),new THREE.MeshStandardMaterial({color:0x0c0a07,metalness:.6,roughness:.4}),-2.31,-.15,0);
+  const diffuser=mesh(new THREE.BoxGeometry(.18,.12,1.4),new THREE.MeshStandardMaterial({color:0x1a0f00,metalness:.9,roughness:.2}),-2.28,-.32,0);edges(diffuser,edgeM);
+  // ─ Side skirts
+  [1.04,-1.04].forEach(z=>{
+    const sk=mesh(new THREE.BoxGeometry(3.6,.1,.08),bodyM,-.1,-.22,z);edges(sk,edgeM);
+  });
+  // ─ Spoiler
+  const sp=mesh(new THREE.BoxGeometry(.07,.24,1.6),bodyM,-2.1,.54,0);edges(sp,edgeM);
+  mesh(new THREE.BoxGeometry(.3,.06,.1),bodyM,-2.08,.42,.74);
+  mesh(new THREE.BoxGeometry(.3,.06,.1),bodyM,-2.08,.42,-.74);
+
+  // ─ Wheels
+  const wPos=[[1.6,-.4,1.06],[1.6,-.4,-1.06],[-1.6,-.4,1.06],[-1.6,-.4,-1.06]];
+  wPos.forEach(([x,y,z])=>{
+    // Tire
+    const tire=mesh(new THREE.CylinderGeometry(.46,.46,.28,32),tireM,x,y,z);
+    tire.rotation.x=Math.PI/2;
+    // Tread ring
+    const tr=new THREE.Mesh(new THREE.TorusGeometry(.4,.07,8,32),tireM);
+    tr.rotation.x=Math.PI/2;tr.position.set(x,y,z);G.add(tr);
+    // Rim disc
+    const rim=mesh(new THREE.CylinderGeometry(.3,.3,.3,8),rimM,x,y,z+(z>0?.01:-.01));
+    rim.rotation.x=Math.PI/2;edges(rim,edgeM);
+    // Hub cap
+    const hub=mesh(new THREE.CylinderGeometry(.09,.09,.31,6),new THREE.MeshStandardMaterial({color:0x0a0705,metalness:.9,roughness:.1}),x,y,z+(z>0?.02:-.02));
+    hub.rotation.x=Math.PI/2;
+    // Spokes — 5 spoke design
+    for(let i=0;i<5;i++){
+      const spoke=new THREE.Mesh(new THREE.BoxGeometry(.28,.04,.05),rimM);
+      spoke.rotation.z=i*(Math.PI*2/5);
+      spoke.position.set(0,.18,0);
+      const spGrp=new THREE.Group();
+      spGrp.add(spoke);spGrp.position.set(x,y,z+(z>0?.015:-.015));
+      spGrp.rotation.x=Math.PI/2;
+      spGrp.rotation.z=i*(Math.PI*2/5);
+      G.add(spGrp);
+    }
+    // Shadow
+    const shad=new THREE.Mesh(new THREE.CircleGeometry(.52,24),new THREE.MeshBasicMaterial({color:0x000000,opacity:.5,transparent:true}));
+    shad.rotation.x=-Math.PI/2;shad.position.set(x,-.77,z);scene.add(shad);
+  });
+
+  G.position.y=.1;
+  scene.add(G);
+
+  // Particles
+  const N=80;const pGeo=new THREE.BufferGeometry();
+  const pArr=new Float32Array(N*3);
+  for(let i=0;i<N;i++){pArr[i*3]=(Math.random()-.5)*18;pArr[i*3+1]=Math.random()*8;pArr[i*3+2]=(Math.random()-.5)*12;}
+  pGeo.setAttribute('position',new THREE.BufferAttribute(pArr,3));
+  scene.add(new THREE.Points(pGeo,new THREE.PointsMaterial({color:0xB8762E,size:.035,opacity:.4,transparent:true})));
+
+  // Resize
+  window.addEventListener('resize',()=>{
+    const W=window.innerWidth,H=window.innerHeight;
+    canvas.width=W;canvas.height=H;
+    renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();
+  });
+
+  // Mouse parallax
+  let tMx=0,tMy=0,cMx=0,cMy=0;
+  document.addEventListener('mousemove',e=>{tMx=(e.clientX/innerWidth-.5);tMy=(e.clientY/innerHeight-.5);});
+
+  // Animate — camera orbits
+  let t=0;
+  (function animate(){
+    requestAnimationFrame(animate);
+    t+=.004;
+    cMx+=(tMx-cMx)*.04;cMy+=(tMy-cMy)*.04;
+
+    const orbitR=7.5;
+    camera.position.x=Math.sin(t*.12)*orbitR+cMx*.8;
+    camera.position.z=Math.cos(t*.12)*orbitR;
+    camera.position.y=2.8+Math.sin(t*.4)*.2+cMy*.4;
+    camera.lookAt(0,.5,0);
+
+    // Subtle float
+    G.position.y=.1+Math.sin(t*1.1)*.035;
+
+    // Spin particles
+    const pa=pGeo.attributes.position.array;
+    for(let i=0;i<N;i++){pa[i*3+1]+=.002;if(pa[i*3+1]>8)pa[i*3+1]=0;}
+    pGeo.attributes.position.needsUpdate=true;
+
+    renderer.render(scene,camera);
+  })();
+})();
+</script>
+</body>
+</html>
