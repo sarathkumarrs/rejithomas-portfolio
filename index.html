@@ -93,7 +93,7 @@ nav{
 
 /* hero stat strip */
 .hero-stats{
-  display:flex;gap:56px;justify-content:center;
+  display:flex;gap:56px;justify-content:center;flex-wrap:wrap;
   margin-top:64px;padding-top:40px;
   border-top:1px solid var(--hairline);
   width:100%;max-width:640px;
@@ -174,8 +174,8 @@ section{position:relative}
 .gallery-note{font-size:11px;line-height:1.8;color:var(--mid);max-width:280px;text-align:right}
 .masonry{columns:3;column-gap:10px}
 .masonry-item{break-inside:avoid;margin-bottom:10px;position:relative;overflow:hidden;background:var(--hairline)}
-.masonry-item img{width:100%;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1)}
-.masonry-item:hover img{transform:scale(1.05)}
+.masonry-item img,.masonry-item video{width:100%;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.masonry-item:hover img,.masonry-item:hover video{transform:scale(1.05)}
 .masonry-cap{position:absolute;bottom:0;left:0;right:0;padding:16px 18px;background:linear-gradient(to top,rgba(28,28,30,.82),transparent);font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#fff;transform:translateY(6px);opacity:0;transition:all .35s}
 .masonry-item:hover .masonry-cap{transform:none;opacity:1}
 
@@ -254,35 +254,62 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
 @media(max-width:768px){
   nav{padding:16px 20px}
   .n-links{display:none}
-  .n-cta{padding:9px 16px;font-size:8px}
-  #hero{padding:100px 24px 80px}
-  .hero-stats{gap:32px}
+  .n-cta{padding:9px 14px;font-size:8px;letter-spacing:1px}
+  #hero{padding:100px 20px 80px;min-height:100svh}
+  .hero-eyebrow{font-size:8px;letter-spacing:3px}
+  .hero-h1{font-size:clamp(80px,22vw,130px)}
+  .hero-h1 .l:nth-child(2){-webkit-text-stroke:1.5px var(--charcoal)}
+  .hero-stats{gap:0;flex-wrap:wrap;max-width:100%;margin-top:40px;padding-top:28px}
+  .hs{width:50%;padding:16px 0;border-bottom:1px solid var(--hairline)}
+  .hs:nth-child(1),.hs:nth-child(2){border-top:1px solid var(--hairline)}
+  .hs-n{font-size:34px}
+  .hero-scroll{display:none}
   #about,#services,#gallery,#awards,#locations{padding:64px 20px}
   #numbers{padding:0}
-  #contact{padding:80px 20px}
+  #contact{padding:72px 20px}
   footer{padding:28px 20px;flex-direction:column;gap:10px;text-align:center}
-  .about-grid{grid-template-columns:1fr;gap:36px;margin-top:36px}
-  .photo-frame{aspect-ratio:4/5}
-  .about-pull{font-size:clamp(17px,5vw,22px);padding-left:18px;margin-bottom:32px}
+  .about-grid{grid-template-columns:1fr;gap:32px;margin-top:32px}
+  .photo-frame{aspect-ratio:4/5;max-height:420px}
+  .about-pull{font-size:clamp(17px,5vw,22px);padding-left:18px;margin-bottom:28px}
   .about-body p{font-size:11px}
-  .tl-row{gap:14px;padding:16px 0}
+  .tl-row{gap:12px;padding:16px 0}
+  .tl-yr{font-size:8px}
+  .tl-info-role{font-size:18px}
   .numbers-grid{grid-template-columns:1fr 1fr}
-  .num-cell{padding:36px 24px}
+  .num-cell{padding:36px 20px}
   .num-cell:nth-child(2n){border-right:none}
   .num-cell:nth-child(3),.num-cell:nth-child(4){border-top:1px solid var(--hairline)}
+  .n-big{font-size:clamp(44px,12vw,68px)}
+  .n-desc{font-size:8px;letter-spacing:2px}
   .svc-grid{grid-template-columns:1fr}
   .svc{padding:36px 24px}
   .masonry{columns:2}
-  .gallery-hdr{flex-direction:column;gap:14px;align-items:flex-start;margin-bottom:28px}
-  .gallery-note{text-align:left;max-width:100%}
-  .aw-row{grid-template-columns:52px 1fr;gap:14px;padding:24px 8px}
-  .aw-yr{font-size:32px}
-  .aw-info-title{font-size:24px}
+  .gallery-hdr{flex-direction:column;gap:12px;align-items:flex-start;margin-bottom:28px}
+  .gallery-note{text-align:left;max-width:100%;font-size:11px}
+  .aw-row{grid-template-columns:52px 1fr;gap:14px;padding:20px 8px}
+  .aw-yr{font-size:30px}
+  .aw-info-title{font-size:22px}
+  .aw-info-org{font-size:9px}
   .loc-grid{grid-template-columns:1fr 1fr}
-  .loc{padding:32px 16px}
-  .contact-split{grid-template-columns:1fr;gap:48px;margin-top:40px}
-  .ct-big{font-size:clamp(22px,6vw,30px);margin-bottom:36px}
+  .loc{padding:28px 12px}
+  .loc-city{font-size:16px;letter-spacing:2px}
+  .contact-split{grid-template-columns:1fr;gap:44px;margin-top:36px}
+  .ct-big{font-size:clamp(22px,6vw,30px);margin-bottom:32px}
+  .ct-val{font-size:12px}
+  .soc-a{padding:14px 16px;font-size:8px}
   .s-h{font-size:clamp(40px,11vw,64px)}
+}
+@media(max-width:480px){
+  .masonry{columns:1}
+  .hero-stats{gap:0}
+  .hs{width:50%}
+  .n-cta{display:none}
+}
+/* Touch devices — no hover, always show captions */
+@media(hover:none){
+  .masonry{column-gap:6px}
+  .masonry-item{margin-bottom:6px}
+  .masonry-cap{transform:none;opacity:1;padding:10px 12px;font-size:7px;letter-spacing:2px}
 }
 </style>
 </head>
@@ -312,7 +339,7 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-eyebrow"><span>Founder &nbsp;·&nbsp; Carsbuddy Pvt Ltd &nbsp;·&nbsp; Bengaluru, India</span></div>
+  <div class="hero-eyebrow"><span>Founder &nbsp;·&nbsp; Carsbuddy &nbsp;·&nbsp; Bengaluru, India</span></div>
   <h1 class="hero-h1">
     <span class="l">REJI</span>
     <span class="l">JAMES</span>
@@ -419,32 +446,82 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
   </div>
   <div class="masonry rv d1">
     <div class="masonry-item">
-      <img src="./images/WhatsApp Image 2026-05-07 at 9.56.51 AM.jpeg" alt="Carsbuddy Work"/>
-      <div class="masonry-cap">Premium Detailing</div>
+      <img src="./finest_works/bmw.jpg" alt="BMW Carsbuddy"/>
+      <div class="masonry-cap">BMW · Ceramic Coating</div>
     </div>
     <div class="masonry-item">
-      <img src="./images/WhatsApp Image 2026-05-07 at 9.56.52 AM.jpeg" alt="Carsbuddy Work"/>
-      <div class="masonry-cap">XPEL Ultimate Plus · PPF</div>
-    </div>
-    <div class="masonry-item">
-      <img src="./images/WhatsApp Image 2026-05-07 at 9.56.53 AM.jpeg" alt="Carsbuddy Work"/>
-      <div class="masonry-cap">Modesta Ceramic Coating</div>
-    </div>
-    <div class="masonry-item">
-      <img src="./images/WhatsApp Image 2026-05-07 at 9.56.53 AM (1).jpeg" alt="Carsbuddy Work"/>
-      <div class="masonry-cap">Graphene · Luxury Detail</div>
-    </div>
-    <div class="masonry-item">
-      <img src="./images/WhatsApp Image 2026-05-07 at 9.56.54 AM.jpeg" alt="Carsbuddy Work"/>
+      <video muted loop playsinline preload="none">
+        <source src="./finest_works/AQM9sv2ZbjTHgEVk2bNftjKTWXxCkRu_haL6Oinernkt2Mp-5gFowqqoy6PTMoe5U7yfwarljgc4nFEHfjTtBYZiI0IdNJ_p4IbswpM.mp4" type="video/mp4"/>
+      </video>
       <div class="masonry-cap">Paint Protection Film</div>
     </div>
     <div class="masonry-item">
-      <img src="./images/WhatsApp Image 2026-05-07 at 9.56.56 AM.jpeg" alt="Carsbuddy Work"/>
-      <div class="masonry-cap">Sun Control · Tinting</div>
+      <img src="./finest_works/tesla.jpg" alt="Tesla Carsbuddy"/>
+      <div class="masonry-cap">Tesla · XPEL PPF</div>
     </div>
     <div class="masonry-item">
-      <img src="./images/WhatsApp Image 2026-05-07 at 9.56.57 AM.jpeg" alt="Carsbuddy Work"/>
-      <div class="masonry-cap">Vinyl Wrap · Transformation</div>
+      <video muted loop playsinline preload="none">
+        <source src="./finest_works/AQMacs4VeedA8_daTIWaSa9zcVySesAyE1WjFrVDKk045k1g98KF44azLrabiFqUU_An0mZwY-khH6F7aR2T8VH-aEoXgILDI-eTZs4.mp4" type="video/mp4"/>
+      </video>
+      <div class="masonry-cap">Ceramic Coating · Process</div>
+    </div>
+    <div class="masonry-item">
+      <img src="./finest_works/volvoxc90.jpg" alt="Volvo XC90 Carsbuddy"/>
+      <div class="masonry-cap">Volvo XC90 · Graphene Coat</div>
+    </div>
+    <div class="masonry-item">
+      <video muted loop playsinline preload="none">
+        <source src="./finest_works/AQMGWK6gPUGWZHlW6vNefL2JK0dMhW903WO8V7TrMG-30pgOOpn8fC5d62MssKRHTr2ZMgu1hAlgCTzVPc2DbBkEGsos-Yd3Ul2dFVc.mp4" type="video/mp4"/>
+      </video>
+      <div class="masonry-cap">Paint Correction</div>
+    </div>
+    <div class="masonry-item">
+      <img src="./finest_works/byd.webp" alt="BYD Carsbuddy"/>
+      <div class="masonry-cap">BYD · Full PPF</div>
+    </div>
+    <div class="masonry-item">
+      <video muted loop playsinline preload="none">
+        <source src="./finest_works/AQMHi9z6DMgrouRxTZfS6Py4seBafhXPqUoGVK1hvt7Tl4xehibu5lubGljfmsjMan9rcJ_RKu5swFwBo_B_UEYxNTD0mi-Vn4Bwatc.mp4" type="video/mp4"/>
+      </video>
+      <div class="masonry-cap">Interior Detailing</div>
+    </div>
+    <div class="masonry-item">
+      <img src="./finest_works/cardbuddy1.jpg" alt="Carsbuddy Studio"/>
+      <div class="masonry-cap">Carsbuddy Studio</div>
+    </div>
+    <div class="masonry-item">
+      <video muted loop playsinline preload="none">
+        <source src="./finest_works/AQMywCMFxSe0mbdIKc0h_EJQP9SsbE9B37nulKK_WH_SwYMu-qO15DsmbFCLoOLFoXTjuVtDV31tcyIoKXnijVkC.mp4" type="video/mp4"/>
+      </video>
+      <div class="masonry-cap">Graphene Treatment</div>
+    </div>
+    <div class="masonry-item">
+      <img src="./finest_works/bike.jpg" alt="Moto Detailing Carsbuddy"/>
+      <div class="masonry-cap">Royal Enfield · Moto Detail</div>
+    </div>
+    <div class="masonry-item">
+      <video muted loop playsinline preload="none">
+        <source src="./finest_works/AQN6sYL-SrTMNBMb1dMUhrdXbz_n-gCRjCIyrM2AQz4XeFKP2UHAonKp6dAr7z6ZMpB0HQv7x6bOIXv1mDXhRM5dkkkdM3McLHn__GE.mp4" type="video/mp4"/>
+      </video>
+      <div class="masonry-cap">Vinyl Wrap · Studio</div>
+    </div>
+    <div class="masonry-item">
+      <video muted loop playsinline preload="none">
+        <source src="./finest_works/AQOWU3EQW56ESgb3Ty72jTqnwK81bkWNY9acEP2zCM2DDCwUHiqRr3Y3_4sgksjG3-cLm0vcqHGXvmZpvWDd-PNwg61-ncy84TY5w3g.mp4" type="video/mp4"/>
+      </video>
+      <div class="masonry-cap">PPF Application</div>
+    </div>
+    <div class="masonry-item">
+      <video muted loop playsinline preload="none">
+        <source src="./finest_works/AQPiztc1ArwhLwY2_6z9Fzn_Hx0Jy3uYlNSfgUfhn81W9rkVcpmS4D0JVVTDYcKrv7s2LSMtF5P7Gc3CP9tAKlZfDyOHErQ66vM_RD0.mp4" type="video/mp4"/>
+      </video>
+      <div class="masonry-cap">Sun Control Tinting</div>
+    </div>
+    <div class="masonry-item">
+      <video muted loop playsinline preload="none">
+        <source src="./finest_works/AQPqFK8A3IGWKFoBNG0UBTIgyLpF3rrOXqzPaTiG0wR_WTshgNUC1Yo6P2r-VHb_1Ik5J0ACJeKXWVeXtFeYrme0vy_N1Py7N3YTei8.mp4" type="video/mp4"/>
+      </video>
+      <div class="masonry-cap">Premium Finish</div>
     </div>
   </div>
 </section>
@@ -574,6 +651,16 @@ const rvObs=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});
 },{threshold:.12});
 document.querySelectorAll('.rv,.rv-left').forEach(el=>rvObs.observe(el));
+
+/* VIDEO AUTOPLAY ON SCROLL */
+const vidObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    const v=e.target;
+    if(e.isIntersecting){v.play();}
+    else{v.pause();v.currentTime=0;}
+  });
+},{threshold:0.25});
+document.querySelectorAll('.masonry-item video').forEach(v=>vidObs.observe(v));
 
 /* COUNTER */
 function animateCount(el,target,duration){
