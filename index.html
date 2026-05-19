@@ -15,12 +15,12 @@
   --mid:#5A5A5A;
   --light:#9A9A9A;
   --hairline:#E8E3DA;
-  --blue:#C9A84C;
-  --blue2:#A8893C;
+  --blue:#A8782A;
+  --blue2:#8A601E;
   --blue-tint:#FBF6EA;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{background:var(--white);color:var(--charcoal);font-family:'Roboto',sans-serif;font-weight:300;overflow-x:hidden}
 
 /* ── PRELOADER ── */
@@ -57,7 +57,7 @@ nav{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:120px 60px 100px;
   position:relative;
-  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(201,168,76,.12) 0%,transparent 70%),var(--white);
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(168,120,42,.12) 0%,transparent 70%),var(--white);
 }
 .hero-eyebrow{font-size:9px;letter-spacing:7px;text-transform:uppercase;color:var(--blue);margin-bottom:28px;overflow:hidden}
 .hero-eyebrow span{display:inline-block;transform:translateY(120%);animation:slUp .7s .2s cubic-bezier(.16,1,.3,1) forwards}
@@ -65,12 +65,12 @@ nav{
   font-family:'Cinzel',serif;
   font-weight:900;
   font-size:clamp(72px,12vw,160px);
-  line-height:.9;color:var(--charcoal);letter-spacing:-2px;
+  line-height:.9;color:var(--blue);letter-spacing:-2px;
   overflow:hidden;margin-bottom:36px;
 }
 .hero-h1 .l{display:block;transform:translateY(110%);animation:slUp .9s cubic-bezier(.16,1,.3,1) forwards}
 .hero-h1 .l:nth-child(1){animation-delay:.3s}
-.hero-h1 .l:nth-child(2){animation-delay:.46s;color:transparent;-webkit-text-stroke:1.5px var(--charcoal)}
+.hero-h1 .l:nth-child(2){animation-delay:.46s;color:transparent;-webkit-text-stroke:1.5px var(--blue)}
 .hero-rule{width:72px;height:2px;background:var(--blue);margin:0 auto 32px;transform:scaleX(0);transform-origin:left;animation:ruleIn .6s .85s cubic-bezier(.16,1,.3,1) forwards}
 @keyframes ruleIn{to{transform:scaleX(1)}}
 .hero-desc{font-size:13px;line-height:1.9;color:var(--mid);max-width:460px;margin:0 auto 40px;opacity:0;animation:fadeUp .7s 1s cubic-bezier(.16,1,.3,1) forwards}
@@ -113,7 +113,7 @@ nav{
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── SECTION BASE ── */
-section{position:relative}
+section{position:relative;overflow:hidden}
 .s-label{font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:12px}
 .s-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,7vw,100px);color:var(--charcoal);letter-spacing:1px;line-height:.9}
 
@@ -140,7 +140,7 @@ section{position:relative}
 .about-body p strong{color:var(--charcoal);font-weight:400}
 .about-brands{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
 .ab{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);border:1px solid var(--hairline);padding:8px 14px;transition:color .2s,border-color .2s,background .2s}
-.ab:hover{color:var(--blue);border-color:rgba(201,168,76,.4);background:var(--blue-tint)}
+.ab:hover{color:var(--blue);border-color:rgba(168,120,42,.4);background:var(--blue-tint)}
 .tl-wrap{margin-top:48px;display:flex;flex-direction:column}
 .tl-row{display:grid;grid-template-columns:88px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--hairline)}
 .tl-row:first-child{border-top:1px solid var(--hairline)}
@@ -158,7 +158,7 @@ section{position:relative}
 
 /* ── NUMBERS ── */
 #numbers{background:var(--off);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
-.numbers-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.numbers-grid{display:grid;grid-template-columns:repeat(5,1fr)}
 .num-cell{padding:80px 48px;border-right:1px solid var(--hairline);position:relative;overflow:hidden;transition:background .3s}
 .num-cell:last-child{border-right:none}
 .num-cell:hover{background:var(--blue-tint)}
@@ -173,7 +173,7 @@ section{position:relative}
 .svc::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--blue);transform:scaleY(0);transform-origin:bottom;transition:transform .5s cubic-bezier(.16,1,.3,1)}
 .svc:hover{background:var(--blue-tint)}
 .svc:hover::after{transform:scaleY(1)}
-.svc-n{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:68px;color:rgba(201,168,76,.08);position:absolute;top:18px;right:24px;line-height:1;font-weight:300}
+.svc-n{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:68px;color:rgba(168,120,42,.08);position:absolute;top:18px;right:24px;line-height:1;font-weight:300}
 .svc-ico{width:30px;height:30px;color:var(--blue);margin-bottom:24px}
 .svc-title{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--charcoal);letter-spacing:1px;margin-bottom:12px}
 .svc-body{font-size:11px;line-height:1.9;color:var(--mid)}
@@ -199,7 +199,7 @@ section{position:relative}
 .aw-yr.active{color:var(--blue);opacity:.55}
 .aw-info-title{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--charcoal);letter-spacing:1px;line-height:1;margin-bottom:6px}
 .aw-info-org{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--mid)}
-.aw-badge{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);border:1px solid rgba(201,168,76,.4);padding:9px 18px;white-space:nowrap}
+.aw-badge{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);border:1px solid rgba(168,120,42,.4);padding:9px 18px;white-space:nowrap}
 
 /* ── LOCATIONS ── */
 #locations{background:var(--off)}
@@ -256,22 +256,22 @@ section{position:relative}
 #hero::before{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
   background-image:
-    radial-gradient(ellipse 420px 320px at 50% 40%,transparent 57%,rgba(201,168,76,.18) 58%,transparent 59%),
-    radial-gradient(ellipse 640px 480px at 50% 40%,transparent 57%,rgba(201,168,76,.12) 58%,transparent 59%),
-    radial-gradient(ellipse 860px 640px at 50% 40%,transparent 57%,rgba(201,168,76,.07) 58%,transparent 59%);
+    radial-gradient(ellipse 420px 320px at 50% 40%,transparent 57%,rgba(168,120,42,.18) 58%,transparent 59%),
+    radial-gradient(ellipse 640px 480px at 50% 40%,transparent 57%,rgba(168,120,42,.12) 58%,transparent 59%),
+    radial-gradient(ellipse 860px 640px at 50% 40%,transparent 57%,rgba(168,120,42,.07) 58%,transparent 59%);
 }
 
 /* About – two large circle halos */
 #about::before{
   content:'';position:absolute;pointer-events:none;z-index:0;
   width:580px;height:580px;border-radius:50%;
-  border:2px solid rgba(201,168,76,.18);
+  border:2px solid rgba(168,120,42,.18);
   top:-140px;right:-110px;
 }
 #about::after{
   content:'';position:absolute;pointer-events:none;z-index:0;
   width:300px;height:300px;border-radius:50%;
-  border:2px solid rgba(201,168,76,.13);
+  border:2px solid rgba(168,120,42,.13);
   bottom:-80px;left:-80px;
 }
 
@@ -279,7 +279,7 @@ section{position:relative}
 #moments::before{
   content:'';position:absolute;pointer-events:none;z-index:0;
   width:500px;height:500px;
-  border:2px solid rgba(201,168,76,.15);
+  border:2px solid rgba(168,120,42,.15);
   transform:rotate(45deg);
   top:calc(50% - 250px);right:-160px;
 }
@@ -289,8 +289,8 @@ section{position:relative}
   content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
   background-image:repeating-linear-gradient(
     -45deg,
-    rgba(201,168,76,.08) 0,
-    rgba(201,168,76,.08) 1px,
+    rgba(168,120,42,.08) 0,
+    rgba(168,120,42,.08) 1px,
     transparent 1px,
     transparent 18px
   );
@@ -299,7 +299,7 @@ section{position:relative}
 /* Awards – dot grid */
 #awards::before{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:radial-gradient(circle,rgba(201,168,76,.15) 1.5px,transparent 1.5px);
+  background-image:radial-gradient(circle,rgba(168,120,42,.15) 1.5px,transparent 1.5px);
   background-size:32px 32px;
 }
 
@@ -307,7 +307,7 @@ section{position:relative}
 #gallery::before{
   content:'';position:absolute;pointer-events:none;z-index:0;
   width:460px;height:460px;
-  border:2px solid rgba(201,168,76,.15);
+  border:2px solid rgba(168,120,42,.15);
   transform:rotate(45deg);
   top:calc(50% - 230px);left:-160px;
 }
@@ -316,13 +316,13 @@ section{position:relative}
 #locations::before{
   content:'';position:absolute;pointer-events:none;z-index:0;
   width:640px;height:640px;border-radius:50%;
-  border:2px solid rgba(201,168,76,.18);
+  border:2px solid rgba(168,120,42,.18);
   bottom:-220px;right:-160px;
 }
 #locations::after{
   content:'';position:absolute;pointer-events:none;z-index:0;
   width:920px;height:920px;border-radius:50%;
-  border:2px solid rgba(201,168,76,.1);
+  border:2px solid rgba(168,120,42,.1);
   bottom:-380px;right:-320px;
 }
 
@@ -360,7 +360,7 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
   #hero{padding:100px 20px 80px;min-height:100svh}
   .hero-eyebrow{font-size:8px;letter-spacing:3px}
   .hero-h1{font-size:clamp(80px,22vw,130px)}
-  .hero-h1 .l:nth-child(2){-webkit-text-stroke:1px var(--charcoal)}
+  .hero-h1 .l:nth-child(2){-webkit-text-stroke:1px var(--blue)}
   .hero-stats{gap:0;flex-wrap:wrap;max-width:100%;margin-top:40px;padding-top:28px}
   .hs{width:50%;padding:16px 0;border-bottom:1px solid var(--hairline)}
   .hs:nth-child(1),.hs:nth-child(2){border-top:1px solid var(--hairline)}
@@ -380,7 +380,7 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
   .numbers-grid{grid-template-columns:1fr 1fr}
   .num-cell{padding:36px 20px}
   .num-cell:nth-child(2n){border-right:none}
-  .num-cell:nth-child(3),.num-cell:nth-child(4){border-top:1px solid var(--hairline)}
+  .num-cell:nth-child(3),.num-cell:nth-child(4),.num-cell:nth-child(5){border-top:1px solid var(--hairline)}
   .n-big{font-size:clamp(44px,12vw,68px)}
   .n-desc{font-size:8px;letter-spacing:2px}
   .svc-grid{grid-template-columns:1fr}
@@ -456,7 +456,8 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
     <div class="hs"><div class="hs-n">6</div><div class="hs-l">Cities</div></div>
     <div class="hs"><div class="hs-n">20+</div><div class="hs-l">Years Exp.</div></div>
     <div class="hs"><div class="hs-n">7K+</div><div class="hs-l">Cars Done</div></div>
-    <div class="hs"><div class="hs-n">5</div><div class="hs-l">Awards</div></div>
+    <div class="hs"><div class="hs-n">2K+</div><div class="hs-l">Scooters Sold</div></div>
+    <div class="hs"><div class="hs-n">8</div><div class="hs-l">Awards</div></div>
   </div>
   <div class="hero-scroll">
     <div class="hero-scroll-line"></div>
@@ -473,7 +474,7 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
     <span class="accent">Revenue Maestro 2025</span><span class="accent">·</span>
     <span>River Mobility</span><span class="accent">·</span>
     <span>Volvo Cars</span><span class="accent">·</span>
-    <span>VST Maserati</span><span class="accent">·</span>
+
     <span>Bengaluru · Kochi · Coimbatore · Shivamogga · Mysore · Belgaum</span><span class="accent">·</span>
     <span>Carsbuddy Pvt Ltd</span><span class="accent">·</span>
     <span>XPEL Authorized Installer</span><span class="accent">·</span>
@@ -481,7 +482,7 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
     <span class="accent">Revenue Maestro 2025</span><span class="accent">·</span>
     <span>River Mobility</span><span class="accent">·</span>
     <span>Volvo Cars</span><span class="accent">·</span>
-    <span>VST Maserati</span><span class="accent">·</span>
+
     <span>Bengaluru · Kochi · Coimbatore · Shivamogga · Mysore · Belgaum</span><span class="accent">·</span>
   </div>
 </div>
@@ -538,7 +539,8 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
     <div class="num-cell rv" data-target="6"><div class="n-big"><span class="cnt">0</span><sup>+</sup></div><div class="n-desc">Cities Across South India</div></div>
     <div class="num-cell rv d1" data-target="20"><div class="n-big"><span class="cnt">0</span><sup>+</sup></div><div class="n-desc">Years of Automotive Experience</div></div>
     <div class="num-cell rv d2" data-target="7000"><div class="n-big"><span class="cnt">0</span><sup>+</sup></div><div class="n-desc">Cars Detailed & Protected</div></div>
-    <div class="num-cell rv d3" data-target="5"><div class="n-big"><span class="cnt">0</span></div><div class="n-desc">Awards & Accolades</div></div>
+    <div class="num-cell rv d3" data-target="2000"><div class="n-big"><span class="cnt">0</span><sup>+</sup></div><div class="n-desc">Scooters Sold · Mysore & Belgaum</div></div>
+    <div class="num-cell rv d4" data-target="8"><div class="n-big"><span class="cnt">0</span></div><div class="n-desc">Awards & Accolades</div></div>
   </div>
 </section>
 
@@ -640,6 +642,21 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
       <div><div class="aw-info-title">Best Customer Support Branch</div><div class="aw-info-org">Skoda Dealership · TAFE Access, Bengaluru</div></div>
       <div class="aw-badge">Skoda</div>
     </div>
+    <div class="aw-row rv d1">
+      <div class="aw-yr">Hyundai</div>
+      <div><div class="aw-info-title">Star Consultant Award</div><div class="aw-info-org">TAFE · Hyundai Dealership</div></div>
+      <div class="aw-badge">Hyundai</div>
+    </div>
+    <div class="aw-row rv d2">
+      <div class="aw-yr">Bharti<br>AXA</div>
+      <div><div class="aw-info-title">Best Agency Manager Award</div><div class="aw-info-org">Bharti AXA Life Insurance</div></div>
+      <div class="aw-badge">Bharti AXA</div>
+    </div>
+    <div class="aw-row rv d3">
+      <div class="aw-yr">Maruti</div>
+      <div><div class="aw-info-title">Best Remote Area Performer Award</div><div class="aw-info-org">ABT Maruti · Regional Excellence</div></div>
+      <div class="aw-badge">ABT Maruti</div>
+    </div>
   </div>
 </section>
 
@@ -662,7 +679,7 @@ footer{background:var(--white);border-top:1px solid var(--hairline);padding:40px
   <span class="s-label rv" style="color:var(--blue)">Reach Out</span>
   <div class="contact-split">
     <div>
-      <div class="ct-big rv d1">"Let's talk about your car — or your <em>next big move.</em>"</div>
+      <div class="ct-big rv d1">"Let's talk about Business Opportunities/Ideas — or your <em>next big move.</em>"</div>
       <div class="ct-items">
         <div class="ct-row rv d1">
           <svg class="ct-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.5 1.18 2 2 0 012.49 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
@@ -830,13 +847,13 @@ document.querySelectorAll('.num-cell').forEach(el=>numObs.observe(el));
     const g=document.createElementNS(NS,'g');
     const s=carSz;
     g.innerHTML=`
-      <rect x="${-s}" y="${-s*0.45}" width="${s*2}" height="${s*0.65}" rx="${s*0.18}" fill="#C9A84C"/>
-      <path d="M${-s*0.42},${-s*0.45} L${-s*0.12},${-s*0.9} L${s*0.3},${-s*0.9} L${s*0.6},${-s*0.45}" fill="#A8893C"/>
+      <rect x="${-s}" y="${-s*0.45}" width="${s*2}" height="${s*0.65}" rx="${s*0.18}" fill="#A8782A"/>
+      <path d="M${-s*0.42},${-s*0.45} L${-s*0.12},${-s*0.9} L${s*0.3},${-s*0.9} L${s*0.6},${-s*0.45}" fill="#8A601E"/>
       <rect x="${-s*0.08}" y="${-s*0.86}" width="${s*0.34}" height="${s*0.26}" rx="${s*0.06}" fill="rgba(180,230,255,0.35)"/>
       <circle cx="${-s*0.58}" cy="${s*0.26}" r="${s*0.28}" fill="#111" stroke="#333" stroke-width="${s*0.06}"/>
       <circle cx="${s*0.58}" cy="${s*0.26}" r="${s*0.28}" fill="#111" stroke="#333" stroke-width="${s*0.06}"/>
-      <circle cx="${-s*0.58}" cy="${s*0.26}" r="${s*0.1}" fill="#C9A84C"/>
-      <circle cx="${s*0.58}" cy="${s*0.26}" r="${s*0.1}" fill="#C9A84C"/>
+      <circle cx="${-s*0.58}" cy="${s*0.26}" r="${s*0.1}" fill="#A8782A"/>
+      <circle cx="${s*0.58}" cy="${s*0.26}" r="${s*0.1}" fill="#A8782A"/>
       <rect x="${s*0.88}" y="${-s*0.16}" width="${s*0.16}" height="${s*0.12}" rx="${s*0.04}" fill="rgba(255,240,160,0.9)"/>
     `;
     const anim=document.createElementNS(NS,'animateMotion');
